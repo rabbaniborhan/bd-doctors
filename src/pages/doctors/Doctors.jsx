@@ -7,7 +7,6 @@ const Doctors = () => {
   const navigate = useNavigate();
   const { speciality } = useParams();
   const { specialityData, doctors } = useContext(AppContext);
-  console.log(filterDoc);
 
   const filterDataFunc = () => {
     if (speciality) {
