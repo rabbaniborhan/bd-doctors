@@ -1,20 +1,42 @@
 import { useContext, useEffect, useState } from "react";
 import { BiDollar } from "react-icons/bi";
+import { GoDotFill } from "react-icons/go";
 import { MdVerified } from "react-icons/md";
 import { TbInfoSquareRounded } from "react-icons/tb";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "./../../context/AppContext";
 
 const Appointment = () => {
   const { docId } = useParams();
   const { doctors } = useContext(AppContext);
+  const navigate = useNavigate();
   const [docInfo, setDocInfo] = useState(null);
-  const fatchDocInfo = async () => {
-    setDocInfo(doctors?.find((doc) => doc._id === docId));
+  const [relatedDoc, setRelatedDoc] = useState([]);
+
+  const fetchDocInfo = async () => {
+    const doctor = doctors?.find((doc) => doc._id === docId);
+    setDocInfo(doctor);
   };
+
+  const fetchRelatedDoc = () => {
+    if (docInfo) {
+      setRelatedDoc(
+        doctors?.filter((doc) => doc.speciality === docInfo.speciality)
+      );
+    }
+  };
+
   useEffect(() => {
-    fatchDocInfo();
+    fetchDocInfo();
   }, [doctors, docId]);
+
+  useEffect(() => {
+    if (docInfo) {
+      fetchRelatedDoc();
+    }
+  }, [docInfo, doctors]);
+
+  console.log(relatedDoc);
 
   function getSevenDay() {
     const datesArray = [];
@@ -34,11 +56,10 @@ const Appointment = () => {
 
   // Example usage
   const nextSevenDays = getSevenDay();
-  console.log("Next 7 Days as Objects:", nextSevenDays);
 
   return (
-    <div className="mt-20">
-      <div className="flex h-80 overflow-hidden px-10 items-center gap-5">
+    <div className="mt-20 px-10">
+      <div className="flex h-80 overflow-hidden  items-center gap-5">
         <div className="w-1/4 rounded-lg h-full  bg-primary-light">
           <img className="h-full" src={docInfo?.image} alt="" />
         </div>
@@ -68,7 +89,7 @@ const Appointment = () => {
         </div>
       </div>
 
-      <div className="flex px-10 gap-5 mt-16 ">
+      <div className="flex  gap-5 mt-16 ">
         <div className="w-1/4"></div>
         <div className="w-3/4">
           <p className="text-xl font-semibold">Booking slots</p>
@@ -83,6 +104,37 @@ const Appointment = () => {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      <div className="mt-16 ">
+        <h4 className="text-xl font-semibold text-center">Related Doctors</h4>
+        <p className="text-gray-500 text-center mb-16">
+          Simply browse through our extensive list of trusted doctors.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-8 px-6 transition-all duration-500 justify-center items-start">
+          {relatedDoc?.map((doctor, index) => (
+            <div
+              onClick={() => navigate(`/appointment/${doctor._id}`)}
+              key={index}
+              className="group h-[330px] w-[220px] cursor-pointer bg-white shadow-md rounded-lg hover:shadow-lg"
+            >
+              <div className="bg-secondary-light overflow-hidden w-full h-4/6">
+                <img
+                  src={doctor?.image}
+                  alt=""
+                  className="group-hover:scale-110 transition-all duration-500"
+                />
+              </div>
+              <div className="p-3">
+                <p className="text-green-500 flex items-center gap-1 text-left">
+                  <GoDotFill /> Available
+                </p>
+                <h3 className="text-xl font-semibold py-1"> {doctor?.name}</h3>
+                <p className="text-sm text-gray-500">{doctor?.speciality}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
