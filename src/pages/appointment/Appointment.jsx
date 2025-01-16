@@ -58,7 +58,7 @@ const Appointment = () => {
   const nextSevenDays = getSevenDay();
 
   return (
-    <div className="mt-20 px-10">
+    <div className="mt-28 px-10">
       <div className="flex h-80 overflow-hidden  items-center gap-5">
         <div className="w-1/4 rounded-lg h-full  bg-primary-light">
           <img className="h-full" src={docInfo?.image} alt="" />
