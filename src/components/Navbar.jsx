@@ -108,7 +108,7 @@ const Navbar = () => {
               )}
             </span>
             {profileMenu && (
-              <div className="w-48 rounded transition-all duration-500 ease-in-out h-60 bg-primary-light opacity-50 absolute right-0">
+              <div className="w-48 rounded transition-all duration-500 ease-in-out h-60 bg-primary-light absolute right-0">
                 <ul className="flex-col text-right mt-8 mx-4 items-center gap-10 font-semibold text-primary-light hover:text-primary-deep justify-center">
                   <li onClick={() => setProfileMenu(!profileMenu)}>
                     <NavLink to="/my-profile" className={"text-white mt-1"}>
@@ -123,7 +123,7 @@ const Navbar = () => {
                       My Appointment
                     </NavLink>
                   </li>
-                  <li className="-mr-1 mt-3">
+                  <li className="-mr-1 mt-4">
                     <button className="bg-white px-3 py-[5px] text-primary-light rounded">
                       LogOut
                     </button>
